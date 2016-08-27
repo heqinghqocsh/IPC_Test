@@ -23,6 +23,7 @@ import java.util.List;
 public class BookManagerActivity extends Activity{
     private static final String TAG = "BookManagerActivity";
     private static final int MESSAGE_NEW_BOOK_ARRIVED = 1;
+    private static final int MESSAGE_NOTIFY_DATA_SET_CHANGED = 2;
 
     private IBookManager mRemoteBookManager;
 
@@ -36,6 +37,7 @@ public class BookManagerActivity extends Activity{
             switch (msg.what){
                 case MESSAGE_NEW_BOOK_ARRIVED:
                     mBookList.add((Book) msg.obj);
+                case MESSAGE_NOTIFY_DATA_SET_CHANGED:
                     mAdapter.notifyDataSetChanged();
                     break;
                 default:
@@ -48,14 +50,19 @@ public class BookManagerActivity extends Activity{
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mRemoteBookManager = IBookManager.Stub.asInterface(iBinder);
-            try {
-                List<Book> list = mRemoteBookManager.getBookList();
-                mBookList.addAll(list);
-                mAdapter.notifyDataSetChanged();
-                mRemoteBookManager.registerListener(mOnNewBookArrivedListener);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            List<Book> list = mRemoteBookManager.getBookList();
+                            mBookList.addAll(list);
+                            mHandler.obtainMessage(MESSAGE_NOTIFY_DATA_SET_CHANGED).sendToTarget();
+                            mRemoteBookManager.registerListener(mOnNewBookArrivedListener);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
         }
 
         @Override

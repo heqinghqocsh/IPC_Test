@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -21,7 +22,7 @@ public class BookManagerService extends Service{
     private AtomicBoolean mIsServiceDestoryed = new AtomicBoolean(false);
 
     private CopyOnWriteArrayList<Book> mBookList = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<IOnNewBookArrivedListener> mListenerList = new CopyOnWriteArrayList<>();
+    private RemoteCallbackList<IOnNewBookArrivedListener> mListenerList = new RemoteCallbackList<>();
 
 
     private Binder mBinder = new IBookManager.Stub(){
@@ -41,18 +42,12 @@ public class BookManagerService extends Service{
 
         @Override
         public void registerListener(IOnNewBookArrivedListener listener) throws RemoteException {
-            if (!mListenerList.contains(listener)){
-                mListenerList.add(listener);
-            }
-            Log.i(TAG,"registerListener,size : "+mListenerList.size());
+            mListenerList.register(listener);
         }
 
         @Override
         public void unRegisterListener(IOnNewBookArrivedListener listener) throws RemoteException {
-            if (mListenerList.contains(listener)){
-                mListenerList.remove(listener);
-            }
-            Log.i(TAG,"registerListener,size : "+mListenerList.size());
+            mListenerList.unregister(listener);
         }
     };
 
@@ -72,10 +67,14 @@ public class BookManagerService extends Service{
 
     private void onNewBookArrived(Book book) throws RemoteException{
         mBookList.add(book);
-        for (int i = 0;i < mListenerList.size();i++){
-            IOnNewBookArrivedListener listener = mListenerList.get(i);
-            listener.onNewBookArrived(book);
+        final int N = mListenerList.beginBroadcast();
+        for (int i = 0;i < N;i++){
+            IOnNewBookArrivedListener listener = mListenerList.getBroadcastItem(i);
+            if (listener != null){
+                listener.onNewBookArrived(book);
+            }
         }
+        mListenerList.finishBroadcast();
     }
 
 
