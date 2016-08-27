@@ -18,6 +18,9 @@
         <activity android:name=".ipc_messenger.MessengerActivity"/>
         <service android:name=".ipc_messenger.MessengerService"
             android:process=":remote"/>
+        <activity android:name=".ipc_aidl.aidl.BookManagerActivity"/>
+        <service android:name=".ipc_aidl.aidl.BookManagerService"
+            android:process=":remote"/>
     </application>
 
 </manifest>

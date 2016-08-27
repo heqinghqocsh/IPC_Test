@@ -17,4 +17,12 @@
         android:onClick="onClick"
         android:padding="10dp"
         android:text="使用Messenger进行IPC" />
+    <TextView
+        android:id="@+id/messenger_aidl"
+        android:background="@drawable/btn_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="使用AIDL进行IPC" />
 </RelativeLayout>

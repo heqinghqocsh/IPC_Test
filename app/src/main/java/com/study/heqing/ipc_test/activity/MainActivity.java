@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.study.heqing.ipc_test.R;
+import com.study.heqing.ipc_test.ipc_aidl.aidl.BookManagerActivity;
 import com.study.heqing.ipc_test.ipc_messenger.MessengerActivity;
 
 
@@ -23,6 +24,10 @@ public class MainActivity extends Activity {
         switch (v.getId()){
             case R.id.messenger_ipc:
                 intent.setClass(this, MessengerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.messenger_aidl:
+                intent.setClass(this, BookManagerActivity.class);
                 startActivity(intent);
                 break;
         }
