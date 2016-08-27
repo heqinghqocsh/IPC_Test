@@ -49,7 +49,10 @@ public class BookManagerService extends Service{
 
         @Override
         public void unRegisterListener(IOnNewBookArrivedListener listener) throws RemoteException {
-
+            if (mListenerList.contains(listener)){
+                mListenerList.remove(listener);
+            }
+            Log.i(TAG,"registerListener,size : "+mListenerList.size());
         }
     };
 
@@ -58,11 +61,41 @@ public class BookManagerService extends Service{
         super.onCreate();
         mBookList.add(new Book(1,"Android",45.9f));
         mBookList.add(new Book(2,"iOS",45.9f));
+        new Thread(new ServiceWorker()).start();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
+    }
+
+    private void onNewBookArrived(Book book) throws RemoteException{
+        mBookList.add(book);
+        for (int i = 0;i < mListenerList.size();i++){
+            IOnNewBookArrivedListener listener = mListenerList.get(i);
+            listener.onNewBookArrived(book);
+        }
+    }
+
+
+    private class ServiceWorker implements Runnable{
+        @Override
+        public void run() {
+            while (!mIsServiceDestoryed.get()){
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                int bookId = mBookList.size()+1;
+                Book book = new Book(bookId,"new Book #"+bookId,49.5f+bookId);
+                try {
+                    onNewBookArrived(book);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
