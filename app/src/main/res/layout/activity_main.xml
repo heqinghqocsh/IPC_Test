@@ -29,4 +29,14 @@
         android:onClick="onClick"
         android:padding="10dp"
         android:text="使用AIDL进行IPC" />
+
+    <TextView
+        android:id="@+id/ipc_provider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_background"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="使用Content Provider进行IPC" />
 </LinearLayout>

@@ -21,6 +21,14 @@
         <activity android:name=".ipc_aidl.aidl.BookManagerActivity"/>
         <service android:name=".ipc_aidl.aidl.BookManagerService"
             android:process=":remote"/>
+
+
+        <activity android:name=".ipc_contentprovider.ProviderActivity"/>
+        <provider
+            android:authorities="com.study.heqing.ipc_test.book.provider"
+            android:name=".ipc_contentprovider.BookProvider"
+            android:permission="com.study.heqing.ipc_test.PROVIDER"
+            android:process=":provider"/>
     </application>
 
 </manifest>
