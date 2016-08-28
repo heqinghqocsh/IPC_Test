@@ -29,6 +29,8 @@
             android:name=".ipc_contentprovider.BookProvider"
             android:permission="com.study.heqing.ipc_test.PROVIDER"
             android:process=":provider"/>
+        <activity android:name=".ipc_binder_pool.BinderPoolActivity"/>
+        <service android:name=".ipc_binder_pool.BInderPoolService"/>
     </application>
 
 </manifest>

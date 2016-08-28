@@ -53,7 +53,7 @@ public class BookProvider extends ContentProvider{
                 mDb.execSQL("insert into book (bookid,bookname,bookprice) values(2,'iOS',43.8)");
                 mDb.execSQL("insert into book (bookid,bookname,bookprice) values(3,'HTML5',53.8)");
 
-                mDb.execSQL("insert into user (id,name,sex) values(1,'何清',1)");
+                mDb.execSQL("insert into user (id,name,sex) values(1,'张三',1)");
                 mDb.execSQL("insert into user (id,name,sex) values(2,'小雪',0)");
             }
         }).start();

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.study.heqing.ipc_test.R;
 import com.study.heqing.ipc_test.ipc_aidl.aidl.BookManagerActivity;
+import com.study.heqing.ipc_test.ipc_binder_pool.BinderPoolActivity;
 import com.study.heqing.ipc_test.ipc_contentprovider.ProviderActivity;
 import com.study.heqing.ipc_test.ipc_messenger.MessengerActivity;
 
@@ -33,6 +34,10 @@ public class MainActivity extends Activity {
                 break;
             case R.id.ipc_provider:
                 intent.setClass(this, ProviderActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ipc_binder_pool:
+                intent.setClass(this, BinderPoolActivity.class);
                 startActivity(intent);
                 break;
         }
